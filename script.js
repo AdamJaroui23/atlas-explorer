@@ -3,7 +3,9 @@ const API_URL = "https://countries.dev/countries";
 // Tous les pays reçus de l'API (rempli une seule fois, au chargement)
 let allCountries = [];
 
-// TODO : récupère ici les éléments du DOM dont tu as besoin
+const continentSelect = document.querySelector("#continent");
+const searchInput = document.querySelector("#search");
+const sortButton = document.querySelector("button");
 
 /**
  * Récupère tous les pays depuis l'API.
@@ -13,7 +15,19 @@ let allCountries = [];
  * @returns {Promise<Array>} Le tableau de tous les pays.
  */
 async function fetchCountries() {
-  // TODO
+  const response = await fetch(API_URL);
+
+  if (!response.ok) {
+    throw new Error(`Impossible de récupérer les pays (${response.status})`);
+  }
+
+  const countries = await response.json();
+
+  if (!Array.isArray(countries)) {
+    throw new Error("La réponse de l'API ne contient pas une liste de pays");
+  }
+
+  return countries;
 }
 
 /**
@@ -24,7 +38,35 @@ async function fetchCountries() {
  * @returns {HTMLElement} La carte, prête à être ajoutée à la grille.
  */
 function createCountryCard(country) {
-  // TODO
+  const card = document.createElement("article");
+
+  card.className = "country-card";
+
+  let flagUrl = "";
+  if (typeof country.flags === "object") {
+    flagUrl = country.flags.svg || country.flags.png || "";
+  } else {
+    flagUrl = country.flags || "";
+  }
+
+  card.innerHTML = `
+    <img 
+      src="${flagUrl}" 
+      alt="Drapeau de ${country.name || "ce pays"}"
+      class="country-card__flag"
+    >
+
+    <h2 class="country-card__name">
+      ${country.name || "Nom inconnu"}
+    </h2>
+
+    <p class="country-card__details">
+      Capitale : ${country.capital || "Inconnue"} |
+      Population : ${country.population || "Inconnue"}
+    </p>
+  `;
+
+  return card;
 }
 
 /**
@@ -36,7 +78,18 @@ function createCountryCard(country) {
  * @param {Array} countries - Les pays à afficher.
  */
 function displayCountries(countries) {
-  // TODO
+  const cardsGrid = document.querySelector("#countries-grid");
+
+  cardsGrid.innerHTML = "";
+
+  if (!countries || countries.length === 0) {
+    cardsGrid.innerHTML = "<p>Aucun pays ne correspond.</p>";
+    return;
+  }
+
+  countries.forEach((country) => {
+    cardsGrid.appendChild(createCountryCard(country));
+  });
 }
 
 /**
@@ -99,7 +152,17 @@ function showError(message) {
  * (Bonus) Gère le chargement et les erreurs avec try...catch.
  */
 async function init() {
-  // TODO
+  try {
+    allCountries = await fetchCountries();
+    displayCountries(allCountries);
+
+    continentSelect.addEventListener("change", filterCountries);
+    searchInput.addEventListener("input", filterCountries);
+  } catch (error) {
+    const cardsGrid = document.querySelector("#countries-grid");
+    cardsGrid.innerHTML =
+      `<p>Impossible de charger les pays : ${error.message}</p>`;
+  }
 }
 
 init();

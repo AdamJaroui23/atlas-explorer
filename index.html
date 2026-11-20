@@ -1,23 +1,56 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="fr">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Atlas Voyages – Explorer le monde</title>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Atlas Voyages</title>
 
-    <!-- Police Google Fonts : Inter -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
-      rel="stylesheet"
-    />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-    <!-- Si tu utilises un framework CSS (Bootstrap, Tailwind…), ajoute son lien ICI, AVANT style.css -->
-    <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
 
-    <!-- defer : le script s'exécute une fois le HTML chargé -->
-    <script src="script.js" defer></script>
-  </head>
-  <body></body>
+  <header>
+    <nav class="navbar">
+      <div class="container">
+        <a href="#" class="brand">Atlas Voyages</a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="container">
+    <section class="explorer">
+      <h1>Explorer le monde</h1>
+      <p>Choisis un continent, parcours les pays et trouve ta prochaine destination.</p>
+
+      <form class="filters">
+        <div class="field">
+          <label for="continent">Continent</label>
+          <select id="continent">
+            <option value="africa">Afrique</option>
+            <option value="asia">Asie</option>
+            <option value="europe">Europe</option>
+            <option value="north-america">Amérique du Nord</option>
+            <option value="south-america">Amérique du Sud</option>
+            <option value="oceania">Océanie</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="search">Rechercher un pays</label>
+          <input type="search" id="search" placeholder="Ex. : Morocco">
+        </div>
+
+        <button type="button">↕ Trier par population</button>
+      </form>
+
+      <div id="countries-grid" class="countries-grid"></div>
+    </section>
+  </main>
+
+</body>
 </html>
